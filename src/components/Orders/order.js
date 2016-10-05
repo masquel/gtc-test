@@ -6,8 +6,13 @@ import { DragSource } from 'react-dnd';
 const orderSource = {
   beginDrag(props) {
   	const {order} = props;
-    return order;
-  },endDrag(props){
+    return {
+    	order
+    };
+  },endDrag(props,monitor){
+  	if (!monitor.didDrop()) {
+		return;
+	}
   	props.onRemove();
   }
 };

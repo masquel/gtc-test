@@ -26,7 +26,7 @@ export const ordersLoad = (state = {loading: true,orders: []}, {type,loading,ord
 			return {
 				orders: [
 					...state.orders,
-					orders
+					...orders
 				]
 			}
 		}

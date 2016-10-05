@@ -29,16 +29,31 @@ export const carsLoad = (state = {loading: true,cars: []}, {type,loading,cars,in
 				loading
 			}
 		}
+		case ACTIONS.CLEAR_GOODS:{
+			return {
+				cars:[
+					...state.cars.slice(0, index),
+					{
+						brand: state.cars[index].brand,
+						orders: []
+					},
+					...state.cars.slice(index+1)
+				],
+				loading
+			}
+		}
 		default:
 			return state
 
 	}
 }
 
-export const currentCar = (state = {}, {type,car}) => {
+export const currentCar = (state = -1, {type,index}) => {
 	switch(type){
+		case ACTIONS.ADD_GOODS:
+		case ACTIONS.CLEAR_GOODS:
 		case ACTIONS.SET_CURRENT_CAR:
-			return car;
+			return index;
 		default: 
 			return state;
 	}

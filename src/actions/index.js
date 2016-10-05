@@ -45,6 +45,7 @@ export const removeOrder = (index) => {
 }
 
 export const addOrdersFromCar = (orders) => {
+	console.log(orders);
 	return {
 		type: ACTIONS.ADD_ORDERS_FROM_CAR,
 		orders
@@ -87,12 +88,14 @@ export const fetchCars = () => {
 }
 
 
-export const setCurrentCar = (car) => {
+export const setCurrentCar = (index) => {
 	return {
 		type: ACTIONS.SET_CURRENT_CAR,
-		car
+		index
 	}
 }
+
+
 
 export const addGoods = (index, order) => {
 	return {
@@ -100,4 +103,11 @@ export const addGoods = (index, order) => {
 		index,
 		order
 	}
+}
+
+export const clearGoods = (index) => {
+	return {
+		type: ACTIONS.CLEAR_GOODS,
+		index
+	}	
 }

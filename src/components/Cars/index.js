@@ -3,7 +3,7 @@ import './cars.styl';
 import Car from './car';
 import {connect} from 'react-redux';
 
-import {fetchCars, setCurrentCar,addGoods} from '../../actions';
+import {fetchCars, setCurrentCar,addGoods,clearGoods} from '../../actions';
 
 class Cars extends Component {
 	constructor(props){
@@ -13,11 +13,10 @@ class Cars extends Component {
 		this.props.dispatch(fetchCars());
 	}
 	handleDrop(index,order){
-		console.log(index,order);
 		this.props.dispatch(addGoods(index,order));
 	}
 	render() {
-		const {dispatch} = this.props;
+		const {dispatch,currentCar} = this.props;
 		const {loading, cars} = this.props.cars;
 
 		return (
@@ -36,7 +35,15 @@ class Cars extends Component {
 						<tbody className="table__body">
 							{cars.map((car, i) => {
 								return (
-									<Car onDrop={this.handleDrop.bind(this)} index={i} key={i} car={car} onClick={()=>{dispatch(setCurrentCar(car))}}/>
+									<Car 
+										key={i}
+										onDrop={this.handleDrop.bind(this)} 
+										onClick={()=>{dispatch(setCurrentCar(i))}}
+										onClear={()=>{dispatch(clearGoods(i))}}
+										index={i} 
+										car={car}
+										className={currentCar === i ? 'car--active' : ''} 
+									/>
 								)
 							})}
 						</tbody>

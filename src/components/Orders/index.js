@@ -1,10 +1,28 @@
 import React, {Component, PropTypes} from 'react';
+import { DropTarget } from 'react-dnd';
+import {connect} from 'react-redux';
+
 import './orders.styl';
 
 import Order from './order';
 
-import {fetchOrders,removeOrder} from '../../actions';
-import {connect} from 'react-redux';
+import {fetchOrders,removeOrder,addOrdersFromCar} from '../../actions';
+
+
+const ordersTarget = {
+  drop(props, monitor) {
+  	let car = monitor.getItem();
+    props.dispatch(addOrdersFromCar(car.orders));
+  }
+};
+
+const collect = (connect, monitor) => {
+  return {
+    connectDropTarget: connect.dropTarget(),
+    isOver: monitor.isOver(),
+    canDrop: monitor.canDrop()
+  };
+}
 
 class Orders extends Component {
 	constructor(props){
@@ -14,10 +32,15 @@ class Orders extends Component {
 		this.props.dispatch(fetchOrders());
 	}
 	render() {
-		const {dispatch} = this.props;
+		const {dispatch,connectDropTarget,canDrop,isOver} = this.props;
 		const {loading, orders} = this.props.orders;
-		return (
-			<div className="orders half-height overflow-y">
+
+		const isActive = isOver && canDrop;
+
+		return connectDropTarget(
+			<div className="orders half-height overflow-y" style={{
+				backgroundColor: isActive ? '#2ecc71' : (canDrop ? '#3498db' : '')
+			}}>
 				{
 					(typeof loading !== 'undefined' && loading ) ? <p>Loading Orders Component...</p> :
 					<table className="table table-bordered table-striped orders__table">
@@ -38,7 +61,9 @@ class Orders extends Component {
 							}
 						</tbody>
 					</table>
+
 				}
+				{isActive && <p className="lead">Перенесите автомобиль в эту область, чтобы сбросить все его товары</p>}
 			</div>
 		)
 	}
@@ -47,5 +72,5 @@ class Orders extends Component {
 Orders.propTypes = {
 
 }
-
+Orders = DropTarget('car_card', ordersTarget, collect)(Orders);
 export default connect(s=>s)(Orders)
