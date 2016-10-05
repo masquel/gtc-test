@@ -29,7 +29,7 @@ module.exports = {
     loaders: [
       {
         test: /\.js$/,
-        loaders: ['react-hot', 'babel'],
+        loaders: ['react-hot/webpack', 'babel'],
         include: path.join(__dirname, 'src')
       },
       {
@@ -43,6 +43,9 @@ module.exports = {
       {
         test: /\.json$/,
         loader: 'json'
+      }, {
+        test: /\.(png|jpg|jpeg|gif|svg|woff|woff2|ttf|eot)$/,
+        loader: 'file'
       }
     ]
   }
